@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import axios from 'axios'
-// import * as parser from './dictResultParser.ts'
+import { parseWordInfo } from './dictResultParser'
 
 dotenv.config()
 
@@ -35,10 +35,9 @@ app.get('/word/:wordspell', (req, res) => {
 
     const url = `${DICT_URL}${word}`
     try {
-        console.log('sending reques to DICT: ', url)
         axios.get(url)
             .then(result => {
-                // console.log(parser.parseWordInfo(result.data))
+                console.log(parseWordInfo(result))
                 res.json(result.data)
             })
     } catch (err) {
