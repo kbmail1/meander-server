@@ -12,7 +12,7 @@ const DictResults = (props) => {
     <>
       <span className="dict-results__content">
         Results for word: {props.word}
-        {JSON.stringify(parser.parseResult(props.source))}
+        {JSON.stringify(parser.parseWordInfo(props.wordInfo))}
         {props.children}
       </span>
       <span className="dict-results__menu">

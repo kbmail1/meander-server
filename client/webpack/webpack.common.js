@@ -45,4 +45,5 @@ module.exports = {
     }),
   ],
   stats: 'errors-only',
+  devtool: 'source-map',
 }

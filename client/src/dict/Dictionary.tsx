@@ -11,7 +11,7 @@ import DictResults from './DictResults'
 const Dictionary = (props) => {
   const [word, setWord] = useState('sit')
   const [choices, setChoices] = useState<string[]>([])
-  const [result, setResult] = useState('loading...')
+  const [wordInfo, setWordInfo] = useState({})
 
   const handleChoiceClicked = (event) => {
     const name = event.target.name
@@ -37,9 +37,8 @@ const Dictionary = (props) => {
     axios.get('http://localhost:4000/word/sit').then((result) => {
       console.log('------')
       console.log(result)
+      setWordInfo(result)
       console.log('------end-----')
-      // setResult(JSON.stringify(result.data, null, 2))
-      setResult(JSON.stringify(result, null, 2))
     })
   }
 
@@ -89,7 +88,7 @@ const Dictionary = (props) => {
       </div>
 
       <div className="dict-results__container">
-        <DictResults word={word} source={result}></DictResults>
+        <DictResults word={word} wordInfo={wordInfo}></DictResults>
       </div>
     </div>
   )

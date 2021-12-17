@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import axios from 'axios'
+// import * as parser from './dictResultParser.ts'
 
 dotenv.config()
 
@@ -26,40 +27,43 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
- app.get('/word/:wordspell', (req, res) => {
+app.get('/word/:wordspell', (req, res) => {
     let word = req.params.wordspell
     console.log('received URL: ', req.url)
     console.log(`received request for word: ${word}`)
     console.log('===================')
 
     const url = `${DICT_URL}${word}`
-     try {
-         console.log('sending reques to DICT: ', url)
-         axios.get(url)
-             .then(result => res.json(result.data))
-     } catch (err) {
-         console.log("GG", err)
-     }
+    try {
+        console.log('sending reques to DICT: ', url)
+        axios.get(url)
+            .then(result => {
+                // console.log(parser.parseWordInfo(result.data))
+                res.json(result.data)
+            })
+    } catch (err) {
+        console.log(`GET from ${url} failed... `, err)
+    }
 
 
-     /* => alternative to above, so that CORS is allowed.
-      * => however, my problem right now (during development) is that
-      * the react app is loaded from localhost:8080 and that app tries
-      * accessing localhost:400 (node server).  So it is the react app
-      * (based on create-reaact-app util) - which needs to be enabled for
-      * CORS
-      */
+    /* => alternative to above, so that CORS is allowed.
+     * => however, my problem right now (during development) is that
+     * the react app is loaded from localhost:8080 and that app tries
+     * accessing localhost:400 (node server).  So it is the react app
+     * (based on create-reaact-app util) - which needs to be enabled for
+     * CORS
+     */
 
-     /*
-     var allowCrossDomain = function(req, res, next) {
-        res.header('Access-Control-Allow-Origin', "*");
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
-        next();
-    };
+    /*
+    var allowCrossDomain = function(req, res, next) {
+       res.header('Access-Control-Allow-Origin', "*");
+       res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+       res.header('Access-Control-Allow-Headers', 'Content-Type');
+       next();
+   };
 
-    app.use(allowCrossDomain);
-    */
+   app.use(allowCrossDomain);
+   */
 
 
 })
