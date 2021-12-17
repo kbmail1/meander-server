@@ -1,0 +1,53 @@
+
+.dict-results__container {
+  border-left: 10px;
+
+  border: 0.01rem solid red;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+.dict-results__content {
+  width: calc(100% - 120px);
+  border: 1px solid yellow;
+  padding: 10px;
+  margin: 10px;
+}
+.dict-results__menu {
+  margin: 10px 5px 10px 0;
+  padding-right:0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100%;
+  // border-left: 0.02rem solid #ccc;
+
+}
+
+.dict-results__menu-button {
+  cursor: pointer;
+  list-style-type: none;
+  text-align: left;
+  width: 100px;
+  margin: 0;
+  padding: 10px 5px;
+  border: 0;
+  background-color: #fff;
+  border-left: 0.02rem solid #ccc;
+
+  &:hover {
+    color:rgb(255, 200, 200);
+    transition: 1s;
+  }
+
+  &:focus {
+    color:rgb(240, 50, 50);
+    transition: 1s;
+    border: 0.02rem solid #ccc;
+    border-left: 0.02px outset #fff;
+
+    border-radius: 0px 5px 5px 0px;
+  }
+}

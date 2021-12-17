@@ -1,0 +1,20 @@
+
+.dict-container {
+  display: flex;
+  align-items:flex-start;
+}
+.dict-choices {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 0 0;
+  margin: 0;
+}
+.dict-choice {
+  display: flex;
+  align-items: center;
+
+}
+
+.dict-choice__submit {
+  margin: 10px 0 0 20px;
+}

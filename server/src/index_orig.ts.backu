@@ -1,0 +1,14 @@
+import { ApolloServer, gql } from "apollo-server";
+
+import { resolvers, typeDefs } from "./graphql/schema";
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+const startServer = async () => {
+    const { url } = await server.listen();
+
+    console.log(`GraphQL server running at ${url}`);
+    console.log(`Playground is running at ${url}playground`);
+};
+
+startServer();
