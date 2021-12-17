@@ -21,7 +21,7 @@
     // "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
     "allowJs": true,
     "noImplicitAny": false,
-    "sourceMap": true,
+    "sourceMap": false,
   },
   "include": ["src/**/*"]
 }
