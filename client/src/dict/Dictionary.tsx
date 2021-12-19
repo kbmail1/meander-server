@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import _, { keys } from 'lodash'
 import axios from 'axios'
-import DictResults from './DictResults'
+import DictResultContainer from './DictResultContainer'
 // import { getDataFromTree } from '@apollo/client/react/ssr'
 import { gql, useLazyQuery } from '@apollo/client'
 
@@ -30,8 +30,6 @@ const Dictionary = (props) => {
     }
     console.log('updated-choices: ', choices)
   }
-
-  const gotGqlDaata = (data) => setWordInfo(data)
 
   const restHandleSubmit = (e) => {
     // TODO: confirm if necessary...
@@ -98,7 +96,10 @@ const Dictionary = (props) => {
       </div>
 
       <div className="dict-results__container">
-        <DictResults word={word} wordInfo={wordInfo}></DictResults>
+        <DictResultContainer
+          word={word}
+          wordInfo={wordInfo}
+        ></DictResultContainer>
       </div>
     </div>
   )

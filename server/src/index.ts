@@ -2,15 +2,14 @@ require('source-map-support').install()
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import { resolvers } from './resources/gql/dictResolver'
 dotenv.config()
 
 import axios from 'axios'
 import { IWordInfo, parseWordInfo } from './dictResultParser'
 
 import { ApolloServer } from 'apollo-server-express'
-import { resolvers } from './resources/gql/dictResolver'
-import {  wordInfoSample, typeDefs } from './resources/gql/dictSchema'
-
+import { wordInfoSample, typeDefs } from './resources/gql/dictSchema'
 
 // ---- Init App ----
 const PORT = process.env.PORT || 8081
@@ -51,7 +50,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-
 let sample: IWordInfo = {
     error: '',
     word: '',
@@ -63,15 +61,16 @@ let sample: IWordInfo = {
 
 app.get('/rest/word/:lookupWord', (req, res) => {
     let word = req.params.lookupWord
-    console.log(`received URL: ', ${ req.url } for word: ${word}`)
+    console.log(`received URL: ', ${req.url} for word: ${word}`)
     const url = `${DICT_URL}${word}`
+
     try {
         axios.get(url)
             .then(result => {
                 let data = result.data
                 let parsedResult = parseWordInfo(data)
                 console.log(parsedResult)
-                res.status(200).json(parsedResult)
+                res.json(parsedResult)
             })
             .catch(err => {
                 console.log('axios get failed.')
@@ -83,7 +82,7 @@ app.get('/rest/word/:lookupWord', (req, res) => {
                     origin: '',
                     meanings: []
                 }
-                res.json( sample ).status(404)
+                res.json(sample)
             })
     } catch (err) {
         console.log(`GET from ${url} failed... `, err)
@@ -95,7 +94,7 @@ app.get('/rest/word/:lookupWord', (req, res) => {
             origin: '',
             meanings: []
         }
-        res.json( sample ).status(404)
+        res.json(sample)
     }
 })
 
