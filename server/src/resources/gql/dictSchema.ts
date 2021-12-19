@@ -27,7 +27,7 @@ export const typeDefs = gql`
 
 
   type Query {
-    getWordInfo: WordInfo
+    getWordInfo(word: String!): WordInfo
   }
 `
 // End of Template String..
