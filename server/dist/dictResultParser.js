@@ -11,24 +11,39 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseWordInfo = void 0;
 var parseWordInfo = function (wordInfo) {
-    var result = {
+    if (!wordInfo || !wordInfo.data || wordInfo.data.length === 0) {
+        console.log('returning error from parseWordInfo: ', [wordInfo]);
+        return [{
+                error: 'Error: Failed to parse data returned by dictionary',
+                word: '',
+                phonetic: '',
+                phonetics: [],
+                origin: '',
+                meanings: []
+            }];
+    }
+    var wordInfoArray = wordInfo.data.map(function (oneInterpretation) {
+        parse(oneInterpretation);
+    });
+    return wordInfoArray;
+};
+exports.parseWordInfo = parseWordInfo;
+var parse = function (data) {
+    var wordInfo = {
+        error: '',
         word: '',
         phonetic: '',
         phonetics: [],
         origin: '',
-        meanings: [],
+        meanings: []
     };
-    if (!wordInfo || !wordInfo.data || wordInfo.data.length === 0) {
-        return result;
-    }
-    var data = wordInfo.data[0];
-    result.word = data.word ? data.word : '';
-    result.phonetic = (data === null || data === void 0 ? void 0 : data.word) ? data.word : '';
-    result.phonetics = data.phonetics.map(function (item) {
+    wordInfo.word = data.word ? data.word : '';
+    wordInfo.phonetic = (data === null || data === void 0 ? void 0 : data.word) ? data.word : '';
+    wordInfo.phonetics = data.phonetics.map(function (item) {
         return { text: item.text, audio: item.audio };
     });
-    result.origin = data.origin;
-    result.meanings = data.meanings.map(function (item_meaning) {
+    wordInfo.origin = data.origin;
+    wordInfo.meanings = data.meanings.map(function (item_meaning) {
         var pOfS = item_meaning.partOfSpeech;
         var definitions = item_meaning.definitions.map(function (item_def) {
             return {
@@ -43,9 +58,6 @@ var parseWordInfo = function (wordInfo) {
             definitions: definitions,
         };
     });
-    console.log('START asdfadsfadfasdfadsfadfasdf');
-    console.log(result);
-    console.log('END asdfadsfadfasdfadsfadfasdf');
-    return result;
+    console.log('returning from parse: ', wordInfo);
+    return wordInfo;
 };
-exports.parseWordInfo = parseWordInfo;

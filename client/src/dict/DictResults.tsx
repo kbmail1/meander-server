@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import './DictResults.scss'
-import * as parser from './DictResultParser'
 
 const DictResults = (props) => {
   const [isLoading, setLoading] = useState(true)
@@ -11,9 +10,10 @@ const DictResults = (props) => {
   return (
     <>
       <span className="dict-results__content">
-        Results for word: {props.word}
-        {JSON.stringify(parser.parseWordInfo(props.wordInfo))}
-        {props.children}
+        <h3>word</h3>
+        Searching information for {props.word}...
+        <h3>here it is...</h3>
+        {JSON.stringify(props.wordInfo, null, 2)}
       </span>
       <span className="dict-results__menu">
         <button className="dict-results__menu-button">Meaning</button>

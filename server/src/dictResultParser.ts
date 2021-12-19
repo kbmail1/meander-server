@@ -23,24 +23,22 @@ export interface IWordInfo {
   error: string
 }
 
-export const parseWordInfo = (wordInfo: any): IWordInfo[] => {
-  if (!wordInfo || !wordInfo.data || wordInfo.data.length === 0) {
-    console.log('returning error from parseWordInfo: ', [wordInfo])
-    return [{
+export const parseWordInfo = (data: any): IWordInfo => {
+  if (!data || !data || data.length === 0) {
+    console.log('returning error from parseWordInfo: ', [data])
+    return {
         error: 'Error: Failed to parse data returned by dictionary',
         word: '',
         phonetic: '',
         phonetics: [],
         origin: '',
         meanings: []
-    }]
+    }
   }
-
-  let wordInfoArray: IWordInfo[] = wordInfo.data.map((oneInterpretation:any) => {
-    parse(oneInterpretation)
-  })
-
-  return wordInfoArray
+  let wordInfo: IWordInfo = parse(data[0])
+  console.log('========================== Start ====================')
+  return wordInfo
+  console.log('========================== End ====================')
 }
 
 const parse = (data: any): IWordInfo => {

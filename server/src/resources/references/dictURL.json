@@ -1,0 +1,4 @@
+{
+  "url": "https://api.dictionaryapi.dev/api/v2/entries/en/:word",
+  "sample": "https://api.dictionaryapi.dev/api/v2/entries/en/lump"
+}

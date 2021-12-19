@@ -1,12 +1,11 @@
 import './Dictionary.scss'
-import { Form, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import _, { keys } from 'lodash'
 import axios from 'axios'
 import DictResults from './DictResults'
 // import { getDataFromTree } from '@apollo/client/react/ssr'
-
-// map the FUCK - simple problem.
+import { gql, useLazyQuery } from '@apollo/client'
 
 const Dictionary = (props) => {
   const [word, setWord] = useState('')
@@ -32,8 +31,11 @@ const Dictionary = (props) => {
     console.log('updated-choices: ', choices)
   }
 
-  const handleSubmit = (e) => {
-    e.stopPropagation()
+  const gotGqlDaata = (data) => setWordInfo(data)
+
+  const restHandleSubmit = (e) => {
+    // TODO: confirm if necessary...
+    e.stopPropagation() // and preventDefault()?
 
     console.log('*****', word)
     if (!word || word.trim().length === 0) {
@@ -41,10 +43,9 @@ const Dictionary = (props) => {
       console.log('Enter a word to look up ...')
     } else {
       console.log('----- word is', word)
-      axios.get(`http://localhost:4000/word/${word}`).then((result) => {
-        console.log('------')
-        console.log(result)
-        setWordInfo(result)
+      axios.get(`http://localhost:8081/rest/word/${word}`).then((result) => {
+        console.log(result.data)
+        setWordInfo(result.data)
         console.log('------end-----')
       })
     }
@@ -89,9 +90,9 @@ const Dictionary = (props) => {
           <Button
             name="submit"
             className={`dict-choice dict-choice__submit`}
-            onClick={handleSubmit}
+            onClick={restHandleSubmit}
           >
-            Submit
+            Submit REST Query
           </Button>
         </div>
       </div>
