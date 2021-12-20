@@ -7,6 +7,7 @@ module.exports = {
     hot: true,
     open: true,
   },
+  port: 7777,
   plugins: [
     new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
