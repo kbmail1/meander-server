@@ -1,18 +1,18 @@
 import './Dictionary.scss'
-import { Form, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { useState } from 'react'
-import _ from 'lodash'
+import _, { keys } from 'lodash'
 import axios from 'axios'
-import DictResults from './DictResults'
+import DictResultContainer from './DictResultContainer'
 // import { getDataFromTree } from '@apollo/client/react/ssr'
-
-// map the FUCK - simple problem.
+import { gql, useLazyQuery } from '@apollo/client'
 
 const Dictionary = (props) => {
-  const [word, setWord] = useState('sit')
+  const [word, setWord] = useState('')
   const [choices, setChoices] = useState<string[]>([])
-  const [result, setResult] = useState('loading...')
+  const [wordInfo, setWordInfo] = useState({})
 
+  console.log(`Dictionary, props: ${[...Object.keys(props)]}`)
   const handleChoiceClicked = (event) => {
     const name = event.target.name
     const isChecked = event.target.checked
@@ -31,25 +31,34 @@ const Dictionary = (props) => {
     console.log('updated-choices: ', choices)
   }
 
-  const handleSubmit = () => {
-    console.log('submit: ', word, choices)
+  const restHandleSubmit = (e) => {
+    // TODO: confirm if necessary...
+    e.stopPropagation() // and preventDefault()?
 
-    axios.get('http://localhost:4000/word/sit').then((result) => {
-      console.log('------')
-      console.log(result)
-      console.log('------end-----')
-      // setResult(JSON.stringify(result.data, null, 2))
-      setResult(JSON.stringify(result, null, 2))
-    })
+    console.log('*****', word)
+    if (!word || word.trim().length === 0) {
+      // TODO show warning.
+      console.log('Enter a word to look up ...')
+    } else {
+      console.log('----- word is', word)
+      axios.get(`http://localhost:8081/rest/word/${word}`).then((result) => {
+        console.log(result.data)
+        setWordInfo(result.data)
+        console.log('------end-----')
+      })
+    }
   }
 
   return (
     <div className="dict-container">
       <div className="dict-choices">
         <div>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Control type="Word" placeholder="Word" />
-          </Form.Group>
+          <input
+            type="text"
+            placeholder="Word"
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+          />
         </div>
         <div>
           <div className="dict-choice">
@@ -58,7 +67,7 @@ const Dictionary = (props) => {
               type="checkbox"
               onChange={handleChoiceClicked}
             />
-            <label htmlFor="props.choice">Use in a sentence</label>
+            <label htmlFor="props.choice">Example usage</label>
           </div>
           <div className="dict-choice">
             <input
@@ -79,17 +88,18 @@ const Dictionary = (props) => {
           <Button
             name="submit"
             className={`dict-choice dict-choice__submit`}
-            onClick={async () => {
-              await handleSubmit()
-            }}
+            onClick={restHandleSubmit}
           >
-            Submit
+            Submit REST Query
           </Button>
         </div>
       </div>
 
       <div className="dict-results__container">
-        <DictResults word={word} source={result}></DictResults>
+        <DictResultContainer
+          word={word}
+          wordInfo={wordInfo}
+        ></DictResultContainer>
       </div>
     </div>
   )

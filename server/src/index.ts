@@ -1,22 +1,46 @@
+require('source-map-support').install()
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import axios from 'axios'
-
+import { resolvers } from './resources/gql/dictResolver'
 dotenv.config()
 
+import axios from 'axios'
+import { IWordInfo, parseWordInfo } from './dictResultParser'
+
+import { ApolloServer } from 'apollo-server-express'
+import { wordInfoSample, typeDefs } from './resources/gql/dictSchema'
+
 // ---- Init App ----
-const app = express();
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 8081
 const DICT_URL = process.env.URL || 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 
+const corsOptions = {
+    origin: '*',
+    credentails: true // allow to send coories over CORS
+}
+// REST (express) server
+const app = express();
 // ------ Serve Assets
 if ('production'.length > 0) {
     app.use(express.static("build"))
 }
-
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions))
+
+// GQL (Apollo) server
+const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+})
+apolloServer.start().then(() => {
+    apolloServer.applyMiddleware({
+        app,
+        cors: corsOptions
+    })
+})
+
+// setup data format; allow cross origin for rest.
 
 app.get('/', (req, res) => {
     res.status(200).json({
@@ -26,60 +50,57 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
- app.get('/word/:wordspell', (req, res) => {
-    let word = req.params.wordspell
-    console.log('received URL: ', req.url)
-    console.log(`received request for word: ${word}`)
-    console.log('===================')
+let sample: IWordInfo = {
+    error: '',
+    word: '',
+    phonetic: '',
+    phonetics: [],
+    origin: '',
+    meanings: []
+}
 
+app.get('/rest/word/:lookupWord', (req, res) => {
+    let word = req.params.lookupWord
+    console.log(`received URL: ', ${req.url} for word: ${word}`)
     const url = `${DICT_URL}${word}`
-     try {
-         console.log('sending reques to DICT: ', url)
-         axios.get(url)
-             .then(result => res.json(result.data))
-     } catch (err) {
-         console.log("GG", err)
-     }
 
-
-     /* => alternative to above, so that CORS is allowed.
-      * => however, my problem right now (during development) is that
-      * the react app is loaded from localhost:8080 and that app tries
-      * accessing localhost:400 (node server).  So it is the react app
-      * (based on create-reaact-app util) - which needs to be enabled for
-      * CORS
-      */
-
-     /*
-     var allowCrossDomain = function(req, res, next) {
-        res.header('Access-Control-Allow-Origin', "*");
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
-        next();
-    };
-
-    app.use(allowCrossDomain);
-    */
-
-
+    try {
+        axios.get(url)
+            .then(result => {
+                let data = result.data
+                let parsedResult = parseWordInfo(data)
+                console.log(parsedResult)
+                res.json(parsedResult)
+            })
+            .catch(err => {
+                console.log('axios get failed.')
+                sample = {
+                    error: `${err.response.status}: ${err.response.data.title}; `,
+                    word: word,
+                    phonetic: '',
+                    phonetics: [],
+                    origin: '',
+                    meanings: []
+                }
+                res.json(sample)
+            })
+    } catch (err) {
+        console.log(`GET from ${url} failed... `, err)
+        sample = {
+            error: `${err.response.status}: ${err.response.data.title}`,
+            word: word,
+            phonetic: '',
+            phonetics: [],
+            origin: '',
+            meanings: []
+        }
+        res.json(sample)
+    }
 })
 
 console.log(process.env.NODE_ENV)
+
+// start the common sserver
 app.listen(PORT, () => {
-    console.log(`Node Server listening at http://localhost:${PORT}`)
+    console.log(`Express and 🚀 Server are running at: http://localhost:${PORT}`)
 })
-
-
-/*
-import { ApolloServer, gql } from "apollo-server";
-import { resolvers, typeDefs } from "./graphql/schema";
-const server = new ApolloServer({ typeDefs, resolvers });
-const startServer = async () => {
-    const { url } = await server.listen();
-    console.log(`GraphQL server running at ${url}`);
-    console.log(`Playground is running at ${url}playground`);
-};
-startServer();
-*/
-
-

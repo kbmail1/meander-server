@@ -8,7 +8,7 @@
       "ESNext"
     ] /* Specify library files to be included in the compilation. */,
     "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', 'react' or 'react-jsx'. */,
-    "noEmit": true /* Do not emit outputs. */,
+    "noEmit": false /* (kundan - get source maps) Do not emit outputs. */,
     "noUnusedParameters": true,
     "alwaysStrict": false,
     "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
@@ -21,7 +21,7 @@
     // "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
     "allowJs": true,
     "noImplicitAny": false,
-    "sourceMap": false,
+    "sourceMap": true, /* added to support source maps."
   },
   "include": ["src/**/*"]
 }
