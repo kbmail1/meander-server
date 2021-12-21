@@ -7,6 +7,8 @@ const Landing = () => {
   const handleLogout = (e) => {
     myContext.handleUpdateUserProfile({
       loggedIn: false,
+      userId: 'guest',
+      since: new Date(),
     })
   }
 

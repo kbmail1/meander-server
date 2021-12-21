@@ -1,39 +1,5 @@
-$border-color: #2980b9;
-$border-color: #2980b9;
-$teal-blue: #367588;
-$header-bg-color: $teal_blue;
-$btn-blue-bg: #3498db;
-$btn-hover-bg: $teal-blue;
-$btn-green-bg: #2ecc71;
-$input-bg: #ecf0f1;
-$input-hover-bg: #acd0d1;
+@import './index.scss';
 
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px;
-  background-color: $header-bg-color;
-  color: white;
-  margin: 0 0 0 0 !important;
-}
-footer {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  background-color: $header-bg-color;
-  color: white;
-  font-size: small;
-  font-weight: light;
-
-  padding: 10px;
-  border-radius: 0;
-
-  display: flex;
-  justify-content: space-between;
-}
 ul {
   list-style: none;
   padding: 10px;
@@ -48,6 +14,9 @@ ul {
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  border: 1px solid gray;
+  overflow: auto;
 }
 li {
   width: auto; // NOTE: width 100% didn't work - makes harder for ppsition login header and submit button to align right or left.

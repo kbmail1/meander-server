@@ -4,29 +4,28 @@ export const enum BannerSeverity {
   Error = 1,
   Warn,
   Info,
-  Help,
-  None,
+  Success,
 }
-export interface IBannerState {
+export interface IBannerConfig {
   severity: BannerSeverity
   title: string
   subTitle: string
   description: string
-  hideAfterSecs: number
+  show: boolean
+  removeAfterSecs: number
 }
 
-const DefaultState: IBannerState = {
-  severity: BannerSeverity.None,
+export const DefaultConfig: IBannerConfig = {
+  severity: BannerSeverity.Info,
   title: 'Empty banner',
   subTitle: 'banner subtitle',
   description: 'this is a mock banner to test',
-  hideAfterSecs: 5,
+  show: false,
+  removeAfterSecs: 5,
 }
 
 const BannerMessage = (props) => {
-  // [banner, setBanner] = useState(DefaultState)
-
-  return <div>some banner info</div>
+  return <div>replace with banner...</div>
 }
 
 export default BannerMessage
