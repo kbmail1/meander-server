@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import ApolloProviderComponent from './ApolloProvider'
+import App from './App'
 import './index.scss'
 
-ReactDOM.render(<ApolloProviderComponent />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))

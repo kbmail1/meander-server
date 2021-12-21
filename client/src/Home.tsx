@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import AppContext from './AppContext'
-import Login from './Login'
 import Landing from './Landing'
+import Login from './Login'
 
 // no props from direct parent...
 const Home = () => {
@@ -9,12 +9,10 @@ const Home = () => {
 
   let compToRender
   if (myContext.isLoggedIn()) {
-    compToRender = <Landing />
+    return <Landing />
   } else {
-    compToRender = <Login />
+    return <Login />
   }
-
-  return { compToRender }
 }
 
 export default Home

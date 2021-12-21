@@ -3,32 +3,35 @@ import AppContext from './AppContext'
 import Home from './Home'
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
 
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 import './index.scss'
 
 const App = () => {
-  const [session, setSession] = useState({
+  const [userProfile, setUserProfile] = useState({
     loggedIn: false,
     userid: 'guest',
+    since: new Date(),
   })
-  const setLogin = (loggedIn: boolean, userid: string | null) => {
-    setSession({
-      ...session,
+  const handleUpdateUserProfile = (
+    loggedIn: boolean,
+    userid: string | null,
+    since: Date | null
+  ) => {
+    setUserProfile({
+      ...userProfile,
       loggedIn,
       userid: userid ? userid : 'guest',
+      since: since ? since : new Date(),
     })
   }
-  const isLoggedIn = () => session.loggedIn
+  const isLoggedIn = () => userProfile.loggedIn
   const [endpoints, setEndpoints] = useState({
-    clientPort: process.env.CLIENT_PORT ? process.env.CLIENT_PORT : 7777,
-    serverPort: process.env.SERVER_PORT ? process.env.SERVER_PORT : 8888,
+    clientPort: 7777,
+    serverPort: 8888,
   })
 
   const appProfile = {
-    session,
-    setLogin,
+    userProfile,
+    handleUpdateUserProfile,
     isLoggedIn,
     endpoints,
   }

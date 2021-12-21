@@ -1,13 +1,15 @@
 import React, { useContext } from 'react'
-
 import AppContext from './AppContext'
 
-export default function Landing() {
+const Landing = () => {
   const myContext = useContext(AppContext)
 
   const handleLogout = (e) => {
-    myContext.setLogin(false, null)
+    myContext.handleUpdateUserProfile({
+      loggedIn: false,
+    })
   }
+
   return (
     <div>
       Landing page
@@ -17,3 +19,5 @@ export default function Landing() {
     </div>
   )
 }
+
+export default Landing

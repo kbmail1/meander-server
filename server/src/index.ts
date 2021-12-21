@@ -12,8 +12,8 @@ import { ApolloServer } from 'apollo-server-express'
 import { wordInfoSample, typeDefs } from './resources/gql/dictSchema'
 
 // ---- Init App ----
-const PORT = process.env.PORT || 8081
-const DICT_URL = process.env.URL || 'https://api.dictionaryapi.dev/api/v2/entries/en/'
+const PORT = 8888
+const DICT_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 
 const corsOptions = {
     origin: '*',
@@ -97,8 +97,6 @@ app.get('/rest/word/:lookupWord', (req, res) => {
         res.json(sample)
     }
 })
-
-console.log(process.env.NODE_ENV)
 
 // start the common sserver
 app.listen(PORT, () => {

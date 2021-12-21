@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import App from './App'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { cache } from './dict/cache'
+// import { cache } from './dict/cache'
 import { typeDefs } from './dict/types/dictSchema'
+import AppContext from './AppContext'
 
 // old uri: 'http://localhost:4000',
-// new server is combo & GQL listening at 8081.
+// new server is combo & GQL listening at 8888.
 // ... this allows a single proxy in CRA-loaded react client
 
+// need cache from dict.. for now:
+const cache =
+// serverport is constant!  no need to useContext()
 const client = new ApolloClient({
-  uri: 'http://localhost:8081',
+  uri: `http://localhost:${useContext(AppContext).serverPort}`,
   cache,
   typeDefs,
   resolvers: {},
