@@ -1,46 +1,64 @@
 import React, { useState, useContext } from 'react'
 import AppContext from './AppContext'
-import BannerMessage, * as banner from './BannerMessage'
+import Banner, * as banner from './Banner'
 import './login.scss'
 
+// === React Component ===
 const Login = () => {
   const [creds, setCreds] = useState({ userid: '', password: '' })
   const [errors, setErrors] = useState({
     userIdError: false,
     passwordError: false,
   })
-  const [bannerConfig, setBannerConfig] = useState(banner.DefaultConfig)
-  const myContext = useContext(AppContext)
 
-  // force logout.
-  if (myContext.isLoggedIn()) {
-    myContext.handleUpdateUserProfile({ loggedIn: false })
-  }
+  // Banner component callback.
+  const [bannerUpdates, setBannerUpdates] = useState({
+    show: true,
+    percentWidth: 100,
+  })
+  console.log(`InitialbannerUpdates: ${JSON.stringify(bannerUpdates)}`)
 
   const handleSubmit = (e) => {
-    e.stopPropagation()
-    // TODO: validate... then rest ...  Right now, stay on same (login) page and show/test banner on submit
-
-    /*
-    myContext.handleUpdateUserProfile({
-      loggedIn: true,
-      userId: creds.userid,
-      since: new Date(),
-    })
-    */
+    console.log('login: handleSubmit: Login form Submitted', e.target.name)
   }
-
-  // this keeps field values up to date.
   const handleChange = (e) => {
+    // this keeps field values up to date.
     setCreds({
       ...creds,
       [e.target.id]: e.target.value,
     })
+    console.log('login: handleChange: creds: ', creds)
   }
 
+  // banner test; show it when page loads.
+  const bannerConfig: banner.IBannerConfig = {
+    title: 'K Banner',
+    subTitle: 'K Banner subtitle',
+    message: 'K Banner message',
+    severity: banner.BannerSeverity.Info,
+    totalDuration: 10,
+    updateFrequency: 1,
+  }
+
+  const bannerCallback = (show: boolean, percentWidth: number) => {
+    setBannerUpdates({
+      ...bannerUpdates,
+      show,
+      percentWidth,
+    })
+  }
+
+  console.log(`bannerUpdates: ${JSON.stringify(bannerUpdates)}`)
+  console.log(`bannerUpdates.show: ${bannerUpdates.show}`)
   return (
     <>
-      <BannerMessage />
+      {bannerUpdates.show && (
+        <Banner
+          config={bannerConfig}
+          callback={bannerCallback}
+          width={bannerUpdates.percentWidth}
+        />
+      )}
       <ul
         style={{
           border: '1px solid gray',
