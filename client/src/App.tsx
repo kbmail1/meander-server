@@ -1,58 +1,31 @@
-import React, { useState, useContext } from 'react'
-import AppContext from './AppContext'
-import Home from './Home'
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
+import AppContext, { starterAppContext } from './AppContext'
+import Header from './Header'
+import Footer from './Footer'
+import { Routes, Route, Link } from 'react-router-dom'
 
-import './app.scss'
+import Home from './Home'
+import Login from './Login'
+import Landing from './Landing'
+import About from './About'
+import NotFound from './NotFound'
+import Dictionary from './dict/Dictionary'
 
 const App = () => {
-  const [userProfile, setUserProfile] = useState({
-    loggedIn: false,
-    userid: 'guest',
-    since: new Date(),
-  })
-  const handleUpdateUserProfile = (
-    loggedIn: boolean,
-    userid: string | null,
-    since: Date | null
-  ) => {
-    const freshUserProfile = Object.assign(appContext.userProfile, {
-      loggedIn,
-      userid,
-      since,
-    })
-    setUserProfile(freshUserProfile)
-  }
-  const isLoggedIn = () => appContext.userProfile.loggedIn
-  const [endpoints, setEndpoints] = useState({
-    clientPort: 7777,
-    serverPort: 8888,
-  })
-
-  const appContext = {
-    userProfile,
-    handleUpdateUserProfile,
-    isLoggedIn,
-    endpoints,
-  }
-
   // TODO: make header, footer into components...
   return (
     <>
-      <header>
-        <div className="header-title">Meander Inc.</div>
-      </header>
-      <AppContext.Provider value={appContext}>
-        <Home />
+      <AppContext.Provider value={starterAppContext}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/dict" element={<Dictionary />}></Route>
+          <Route path="/landing" element={<Landing />}></Route>
+          <Route path="/*" element={<NotFound />}></Route>
+        </Routes>
+        <Footer />
       </AppContext.Provider>
-      <footer>
-        <span className="footer__trademark">
-          Meander<sup>&#174;</sup>
-        </span>
-        <span className="footer__copyright">
-          <sup>&#169;</sup> Meander Inc.
-        </span>
-      </footer>
     </>
   )
 }

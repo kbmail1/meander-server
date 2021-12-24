@@ -13,6 +13,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   width: 100%;
   font-weight: 400;
+  height: 100vh;
   font-size: 16px;
   text-align: center;
   margin: 0 !important;
@@ -46,7 +47,7 @@ h5 {
   font-size: 1.1em;
 }
 
-ul {
+ul.login-form {
   list-style: none;
   padding: 10px;
   width: auto;
@@ -72,7 +73,7 @@ ul {
   overflow: auto;
 }
 
-li {
+ul.login-form li {
   width: auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -88,13 +89,13 @@ li {
   padding: 5px;
 }
 
-li:first-child, li:last-child {
+ul.login-form li:first-child, ul.login-form li:last-child {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
 }
 
-li:first-child h2 {
+ul.login-form li:first-child h2 {
   text-transform: capitalize;
 }
 

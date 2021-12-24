@@ -5,12 +5,27 @@ import _, { keys } from 'lodash'
 import axios from 'axios'
 import DictResultContainer from './DictResultContainer'
 // import { getDataFromTree } from '@apollo/client/react/ssr'
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
+
+import { apolloClient, GET_WORDINFO } from '../index'
 
 const Dictionary = (props) => {
   const [word, setWord] = useState('')
   const [choices, setChoices] = useState<string[]>([])
   const [wordInfo, setWordInfo] = useState({})
+
+  const { loading, error, data } = useQuery(GET_WORDINFO, {
+    variables: {
+      word: 'simplicity',
+    },
+  })
+
+  if (loading) return 'Loading...'
+  else if (error) return `Error! ${error.message}`
+  else {
+    console.log(data)
+    console.log(JSON.stringify(data, null, 2))
+  }
 
   console.log(`Dictionary, props: ${[...Object.keys(props)]}`)
   const handleChoiceClicked = (event) => {

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import AppContext from './AppContext'
+import AppContext, { Role } from './AppContext'
 import Banner, * as banner from './Banner'
 import './login.scss'
 
@@ -11,15 +11,16 @@ const Login = () => {
     passwordError: false,
   })
 
-  // Banner component callback.
-  const [bannerUpdates, setBannerUpdates] = useState({
-    show: true,
-    percentWidth: 100,
-  })
-  console.log(`InitialbannerUpdates: ${JSON.stringify(bannerUpdates)}`)
+  const appContext = useContext(AppContext)
 
   const handleSubmit = (e) => {
     console.log('login: handleSubmit: Login form Submitted', e.target.name)
+
+    if (appContext?.login(creds)) {
+      appContext.isLoggedIn = true
+      appContext.userId = creds.userid
+      appContext.role = Role.Admin
+    }
   }
   const handleChange = (e) => {
     // this keeps field values up to date.
@@ -30,7 +31,13 @@ const Login = () => {
     console.log('login: handleChange: creds: ', creds)
   }
 
-  // banner test; show it when page loads.
+  // Banner component callback.
+  const [bannerUpdates, setBannerUpdates] = useState({
+    show: false,
+    percentWidth: 100,
+  })
+  console.log(`InitialbannerUpdates: ${JSON.stringify(bannerUpdates)}`)
+  // banner show it when page loads.
   const bannerConfig: banner.IBannerConfig = {
     title: 'K Banner',
     subTitle: 'K Banner subtitle',
@@ -39,7 +46,6 @@ const Login = () => {
     totalDuration: 10,
     updateFrequency: 1,
   }
-
   const bannerCallback = (show: boolean, percentWidth: number) => {
     setBannerUpdates({
       ...bannerUpdates,
@@ -47,9 +53,9 @@ const Login = () => {
       percentWidth,
     })
   }
-
   console.log(`bannerUpdates: ${JSON.stringify(bannerUpdates)}`)
   console.log(`bannerUpdates.show: ${bannerUpdates.show}`)
+
   return (
     <>
       {bannerUpdates.show && (
@@ -60,6 +66,7 @@ const Login = () => {
         />
       )}
       <ul
+        className="login-form"
         style={{
           border: '1px solid gray',
           overflow: 'auto',

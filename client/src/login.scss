@@ -1,6 +1,6 @@
 @import './index.scss';
 
-ul {
+ul.login-form {
   list-style: none;
   padding: 10px;
   width: auto;
@@ -17,24 +17,26 @@ ul {
 
   border: 1px solid gray;
   overflow: auto;
-}
-li {
-  width: auto; // NOTE: width 100% didn't work - makes harder for ppsition login header and submit button to align right or left.
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  float: right;
-  padding: 5px;
 
-  &:first-child,
-  &:last-child {
-    align-self: center;
-  }
+  li {
+    width: auto; // NOTE: width 100% didn't work - makes harder for ppsition login header and submit button to align right or left.
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    float: right;
+    padding: 5px;
 
-  &:first-child h2 {
-    text-transform: capitalize;
+    &:first-child,
+    &:last-child {
+      align-self: center;
+    }
+
+    &:first-child h2 {
+      text-transform: capitalize;
+    }
   }
 }
+
 
 label {
   font-family: monospace;

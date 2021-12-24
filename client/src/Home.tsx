@@ -1,18 +1,26 @@
-import React, { useState, useContext } from 'react'
-import AppContext from './AppContext'
-import Landing from './Landing'
-import Login from './Login'
+import { Routes, Link, Route, useParams, useNavigate } from 'react-router-dom'
 
-// no props from direct parent...
 const Home = () => {
-  const myContext = useContext(AppContext)
+  const navigate = useNavigate()
 
-  let compToRender
-  if (myContext.isLoggedIn()) {
-    return <Landing />
-  } else {
-    return <Login />
+  const handleLogoutClick = (e) => {
+    e.preventDefault()
+    navigate('/landing')
   }
+  const handleDictClick = (e) => {
+    e.preventDefault()
+    navigate('/dict')
+  }
+
+  return (
+    <>
+      <div style={{ position: 'absolute', top: '120px' }}>
+        I am Home
+        <button onClick={handleLogoutClick}>Logout</button>
+        <button onClick={handleDictClick}>Dictionary</button>
+      </div>
+    </>
+  )
 }
 
 export default Home
