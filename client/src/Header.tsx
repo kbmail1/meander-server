@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import AppContext from './AppContext'
+import AppContext, { Role } from './AppContext'
 import './header-footer.scss'
 import { guestMenu, adminMenu } from './resources/menus'
 import { Routes, Route, Link } from 'react-router-dom'
@@ -14,10 +14,13 @@ import Dictionary from './dict/Dictionary'
 const Header = () => {
   const appContext = useContext(AppContext)
 
-  let showMenu = guestMenu
-  if (appContext?.isLoggedIn === true) {
+  let showMenu: string[] = []
+  if (appContext?.role === Role.Guest) {
+    showMenu = guestMenu
+  } else if (appContext?.role === Role.Admin) {
     showMenu = adminMenu
   }
+
   const listItems = showMenu.map((item, ind) => (
     <li key={ind}>
       <Link to={item}>{item}</Link>

@@ -9,17 +9,17 @@ export interface IAppContext {
   userId: string
   role: Role
   login: (creds: unknown) => boolean
-  logout: (creds: unknown) => boolean
-  sincpoch: number
+  logout: () => unknown
+  sinceEpoch: number
 }
 
 export const starterAppContext: IAppContext = {
   isLoggedIn: false,
-  userId: 'guestUser',
-  role: 'guestRole',
-  login: () => true,
-  logout: () => true,
-  sincpoch: Date.now(),
+  userId: 'guest',
+  role: Role.Guest,
+  login: () => false,
+  logout: () => false,
+  sinceEpoch: Date.now(),
 }
 
 const AppContext = React.createContext<IAppContext | null>(null)

@@ -1,4 +1,8 @@
 import { Routes, Link, Route, useParams, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import AppContext, { Role } from './AppContext'
+import Landing from './Landing'
+import Login from './Login'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -12,15 +16,16 @@ const Home = () => {
     navigate('/dict')
   }
 
-  return (
-    <>
-      <div style={{ position: 'absolute', top: '120px' }}>
-        I am Home
-        <button onClick={handleLogoutClick}>Logout</button>
-        <button onClick={handleDictClick}>Dictionary</button>
-      </div>
-    </>
-  )
+  const appContext = useContext(AppContext)
+  if (!appContext || !appContext?.isLoggedIn) {
+    return <Login />
+  }
+
+  if (appContext.role in [Role.Guest, Role.Admin]) {
+    return <Landing />
+  } else {
+    return <Login />
+  }
 }
 
 export default Home
