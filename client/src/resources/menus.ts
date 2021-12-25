@@ -1,3 +1,3 @@
-export const guestMenu = ['Home', 'Login', 'About', 'Landing', 'Dict', 'Yo']
+export const guestMenu = ['Home', 'Login', 'Dict', 'About']
 
-export const adminMenu = [...guestMenu, 'Landing', 'Dict', 'Logout']
+export const adminMenu = [...guestMenu, 'Landing', 'Logout']

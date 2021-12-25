@@ -1,20 +1,45 @@
 
 .dict-container {
+  width: 100%;
+  position: relative;
+  top: 20px;
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
-  align-items:flex-start;
-}
-.dict-choices {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0 0 0;
-  margin: 0;
-}
-.dict-choice {
-  display: flex;
-  align-items: center;
+  justify-content: center;
 
-}
+  input[type=text] {
+    margin-left: 10px;
+    overflow:visible;
+    box-sizing:border-box;
+    padding: 10px 10px;
+    font-size: 1.5rem;
+    width: 70vw;
+    height: 50px;
+    border-radius: 5px;
+    border-radius: 5px 0 0 5px;
+  }
 
-.dict-choice__submit {
-  margin: 10px 0 0 20px;
+  .search-button{
+    appearance: none;
+    cursor: pointer;
+    white-space: nowrap;
+    width: 50px;
+    height: 50%px;
+    background-color: lightblue;
+    /* border: 1px solid navy; */
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktc2VhcmNoIiB2aWV3Qm94PSIwIDAgMTYgMTYiPgogIDxwYXRoIGQ9Ik0xMS43NDIgMTAuMzQ0YTYuNSA2LjUgMCAxIDAtMS4zOTcgMS4zOThoLS4wMDFjLjAzLjA0LjA2Mi4wNzguMDk4LjExNWwzLjg1IDMuODVhMSAxIDAgMCAwIDEuNDE1LTEuNDE0bC0zLjg1LTMuODVhMS4wMDcgMS4wMDcgMCAwIDAtLjExNS0uMXpNMTIgNi41YTUuNSA1LjUgMCAxIDEtMTEgMCA1LjUgNS41IDAgMCAxIDExIDB6Ii8+Cjwvc3ZnPg==);
+    background-repeat: no-repeat;
+    background-position: top 50% right 50%;
+    background-size: 35px 35px;
+    background-color: white;
+    /* filter: grayscale(100%); */
+    // position: relative;
+    // left: -50px;
+    // top: 1px;
+    // border-radius: 5px;
+    border: 1px solid black;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+  }
 }

@@ -72,7 +72,9 @@ expressApp.get('/', (req, res) => {
     // res.send('Hello World!')
 })
 
-expressApp.post('/rest/word/:lookupWord', (req, res) => {
+// - post needed to field GQL requests from client -  expressApp.post('/rest/word/:lookupWord', (req, res) => {
+// expressApp.post('/rest/word/:lookupWord', (req, res) => {
+expressApp.get('/rest/word/:lookupWord', (req, res) => {
     let word = req.params.lookupWord
     console.log(`received URL: ', ${req.url} for word: ${word}`)
     const url = `${DICT_URL}${word}`

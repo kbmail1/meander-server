@@ -1,6 +1,6 @@
+import './Header.scss'
 import React, { useContext } from 'react'
 import AppContext, { Role } from './AppContext'
-import './header-footer.scss'
 import { guestMenu, adminMenu } from './resources/menus'
 import { Routes, Route, Link } from 'react-router-dom'
 
@@ -15,32 +15,20 @@ const Header = () => {
   const appContext = useContext(AppContext)
 
   let showMenu: string[] = []
-  if (appContext?.role === Role.Guest) {
-    showMenu = guestMenu
-  } else if (appContext?.role === Role.Admin) {
-    showMenu = adminMenu
-  }
-
-  const listItems = showMenu.map((item, ind) => (
-    <li key={ind}>
-      <Link to={item}>{item}</Link>
-    </li>
-  ))
+  showMenu = adminMenu
 
   return (
     <>
       <header>
         <div className="header-title">Meander Inc.</div>
-        <ul className="nav">{listItems}</ul>
+        <div className="header-menu">
+          <ul>
+            <li>first</li>
+            <li>second</li>
+            <li>last</li>
+          </ul>
+        </div>
       </header>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/dict" element={<Dictionary />}></Route>
-        <Route path="/landing" element={<Landing />}></Route>
-        <Route path="/*" element={<NotFound />}></Route>
-      </Routes>
     </>
   )
 }

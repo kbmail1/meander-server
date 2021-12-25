@@ -3,60 +3,7 @@
 $header-bg: $teal-blue;
 $footer-bg: $teal-blue;
 
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 70px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: $header-bg;
-  color: white;
-
-  .header-title {
-    position: absolute;
-    top: 10px;
-    display: block;
-  }
-
-  ul {
-    position: absolute;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    bottom: 0px;
-    width: 100%;
-    display: float;
-    justify-items: flex-start;
-
-    li {
-      float: left;
-      padding: 10px 10px 20px 20px;
-
-      &:last-child {
-        float:right;
-      }
-      a, Link {
-        font-size: 0.8rem;
-        color: white;
-        display: block;
-        text-align: center;
-        text-decoration: none;
-        // doing below shadows the error
-        // where first letter is not caps
-        // ... messing with route urls.
-        // text-transform: capitalize;
-      }
-
-    }
-
-  }
-}
 
 footer {
   position: fixed;

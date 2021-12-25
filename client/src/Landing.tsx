@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import AppContext from './AppContext'
+import Dictionary from './dict/Dictionary'
+import { Navigate } from 'react-router-dom'
 
 const Landing = () => {
-  return (
-    <div style={{ position: 'absolute', top: '200px' }}>Landing landed</div>
-  )
+  return <Navigate to="/dict" />
 }
 
 export default Landing

@@ -20,6 +20,7 @@ const Login = () => {
       appContext.isLoggedIn = true
       appContext.userId = creds.userid
       appContext.role = Role.Admin
+      return <Redirect to="/login" />
     }
   }
   const handleChange = (e) => {
