@@ -1,11 +1,13 @@
 import './Dictionary.scss'
+import DictResult from './DictResult'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import axios from 'axios'
 
 const Dictionary = (props) => {
   const [word, setWord] = useState('')
-  const [data, setData] = useState('')
+  const [data, setData] = useState()
+  const [dataAvail, setDataAvail] = useState(false)
 
   console.log(`Dictionary, props: ${[...Object.keys(props)]}`)
 
@@ -22,19 +24,18 @@ const Dictionary = (props) => {
     axios
       .get(url)
       .then((response) => {
-        const d = JSON.stringify(response.data, null, 2)
-        console.log('d... ', d)
-        setData(d)
+        console.log('d... ', JSON.stringify(response.data, null, 2))
+        setData(response.data)
+        setDataAvail(true)
       })
       .catch((err) => {
-        setData('')
         console.log(`get from ${url} failed.  Error: ${err}`)
       })
   }
 
   return (
     <>
-      <div className="dict-container">
+      <div className="dict-query">
         <input
           type="text"
           placeholder="Word"
@@ -47,10 +48,11 @@ const Dictionary = (props) => {
           onClick={handleSearch}
         />
       </div>
-      <div className="dict-data">
-        <div>Receceived: </div>
-        {data}
-      </div>
+
+      {dataAvail && <DictResult word={word} info={data} />}
+      {!dataAvail && (
+        <div>Word {word} is not a dictionary word (American Standard)</div>
+      )}
     </>
   )
 }
