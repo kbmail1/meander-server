@@ -1,0 +1,171 @@
+* {
+  font-family: 'sans-serif', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana;
+}
+
+html {
+  height: 100vh;
+  width: 100vw;
+}
+
+body {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+  width: 100%;
+  font-weight: 400;
+  height: 100vh;
+  font-size: 16px;
+  text-align: center;
+  margin: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: bolder;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.4em;
+}
+
+h3 {
+  font-size: 1.3em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+h5 {
+  font-size: 1.1em;
+}
+
+ul.login-form {
+  list-style: none;
+  padding: 10px;
+  width: auto;
+  min-width: 350px;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  justify-items: space-around;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border: 1px solid gray;
+  overflow: auto;
+}
+
+ul.login-form li {
+  width: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  float: right;
+  padding: 5px;
+}
+
+ul.login-form li:first-child, ul.login-form li:last-child {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+ul.login-form li:first-child h2 {
+  text-transform: capitalize;
+}
+
+label {
+  font-family: monospace;
+  font-size: smaller;
+}
+
+input[type='text'],
+input[type='password'] {
+  padding: 5px 5px;
+  margin: 5px;
+  background-color: #ecf0f1;
+  width: 200px;
+  display: inline-block;
+}
+
+input[type='text']:focus,
+input[type='password']:focus {
+  color: #367588;
+}
+
+input[type='text']:hover,
+input[type='password']:hover {
+  background-color: #acd0d1;
+}
+
+li > input:hover {
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+li > input:active {
+  -webkit-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  background: white;
+}
+
+.required::after {
+  content: '*';
+  font-variant-position: super;
+  position: relative;
+  top: -0.4rem;
+  color: red;
+}
+
+button {
+  background: #3498db;
+  width: 125px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #2980b9;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: #367588;
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
+  color: white;
+  -webkit-transition: color 0.5s;
+  transition: color 0.5s;
+}
+
+.btn:hover {
+  background: #2cc06b;
+}
+/*# sourceMappingURL=login.css.map */

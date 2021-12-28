@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
-import './index.scss'
-
-import 'bootstrap/dist/css/bootstrap.min.css'
-import MainMenu from './MainMenu'
+import './App.scss'
+import Header from './Header'
+import Footer from './Footer'
+import Dictionary from './dict/Dictionary'
 
 const App = () => {
-  return <MainMenu />
+  return (
+    <div className="app-container">
+      <Header />
+      <Dictionary />
+      <Footer />
+    </div>
+  )
 }
 
 export default App

@@ -1,4 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server'
+import { IWordInfo } from '../../dictResultParser'
 
 export const typeDefs = gql`
 
@@ -25,12 +26,21 @@ export const typeDefs = gql`
     meanings: [Meaning]!
   }
 
-
   type Query {
     getWordInfo(word: String!): WordInfo
   }
 `
 // End of Template String..
+
+export const emptyWordInfo: IWordInfo = {
+    error: '',
+    word: '',
+    phonetic: '',
+    phonetics: [],
+    origin: '',
+    meanings: []
+}
+
 
 export const wordInfoSample = {
   word: 'post',
