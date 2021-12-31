@@ -1,0 +1,56 @@
+.dict-react {
+  border: 1px solid navy;
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-wrap: wrap;
+  // float:left;
+
+  &__ul {
+    // list-style-type: &Imacr;
+    width:100%;
+    list-style-type: none;
+
+    &::before {
+      content: 'general information';
+      text-transform: capitalize;
+    }
+  }
+
+  &__li {
+    text-align:left;
+    display: block;
+    margin: 10px 10px 10px 0;
+    padding: 0px;
+    position:relative;
+    left: -20px;
+
+    height:40px;
+
+      &__key {
+        color: #aaa;
+        &::after {
+          content: ':'
+        }
+      }
+
+      &__val {
+        padding:5px;
+        color: #555;
+        position: absolute;
+        left: 100px;
+        top: -4px;
+        height: 40px;
+        overflow: auto;
+        display: inline-block;
+        overflow-wrap: break-word;
+        min-width: 600px;
+        font-size:smaller;
+      }
+  }
+}
+
+.display-none {
+  display: none;
+}

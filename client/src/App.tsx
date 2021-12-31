@@ -1,6 +1,6 @@
 import './App.scss'
-import Header from './Header'
-import Footer from './Footer'
+import Header from './common/Header'
+import Footer from './common/Footer'
 import Dictionary from './dict/Dictionary'
 
 const App = () => {

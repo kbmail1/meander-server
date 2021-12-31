@@ -5,8 +5,7 @@
 */
 
 import React, { useEffect, useState } from 'react'
-import TimerBar from './TimerBar'
-import './banner.scss'
+import './Banner.scss'
 
 export const enum BannerSeverity {
   Error = 1,

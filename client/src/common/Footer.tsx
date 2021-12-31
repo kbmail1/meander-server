@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import AppContext from './AppContext'
-import './header-footer.scss'
+import AppContext from '../AppContext'
+import './Footer.scss'
 
 const Footer = () => {
   const appContext = useContext(AppContext)
