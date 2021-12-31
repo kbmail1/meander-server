@@ -1,7 +1,7 @@
 import { wordInfoSample } from './dictSchema'
 
 import axios from 'axios'
-import { parseWordInfo } from '../../dictResultParser'
+import { parseWordInfo } from '../../wordResultParser'
 
 // TODO: check if available in redis. If not, get it from disctionary.
 export const resolvers = {

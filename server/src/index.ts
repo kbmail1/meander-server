@@ -10,7 +10,7 @@ import dotenv from 'dotenv'
 import { resolvers } from './resources/gql/dictResolver'
 
 import axios from 'axios'
-import { IWordInfo, parseWordInfo } from './dictResultParser'
+import { IWordInfo, parseWordInfo } from './wordResultParser'
 import { ApolloServer } from 'apollo-server-express'
 import { emptyWordInfo, typeDefs } from './resources/gql/dictSchema'
 

@@ -6,7 +6,7 @@ import { resolvers } from './resources/gql/dictResolver'
 dotenv.config()
 
 import axios from 'axios'
-import { IWordInfo, parseWordInfo } from './dictResultParser'
+import { IWordInfo, parseWordInfo } from './wordResultParser'
 
 import { ApolloServer } from 'apollo-server-express'
 import { wordInfoSample, typeDefs } from './resources/gql/dictSchema'

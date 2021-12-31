@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server'
-import { IWordInfo } from '../../dictResultParser'
+import { IWordInfo } from '../../wordResultParser'
 
 export const typeDefs = gql`
 

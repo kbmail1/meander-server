@@ -8,7 +8,7 @@ var cors_1 = __importDefault(require("cors"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var axios_1 = __importDefault(require("axios"));
-var dictResultParser_1 = require("./dictResultParser");
+var wordResultParser_1 = require("./wordResultParser");
 var apollo_server_express_1 = require("apollo-server-express");
 var dictResolver_1 = require("./resources/gql/dictResolver");
 var dictSchema_1 = require("./resources/gql/dictSchema");
@@ -51,7 +51,7 @@ app.get('/rest/word/:lookupWord', function (req, res) {
     try {
         axios_1.default.get(url)
             .then(function (result) {
-            console.log((0, dictResultParser_1.parseWordInfo)(result));
+            console.log((0, wordResultParser_1.parseWordInfo)(result));
             res.json(result.data);
         });
     }
