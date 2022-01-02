@@ -1,6 +1,7 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: ['./tsconfig.json'],
     ecmaVersion: 2020,
     sourceType: 'module',
   },
@@ -26,6 +27,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
+    'max-len': 0,
     'no-unused-vars': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'react/prop-types': 'off',

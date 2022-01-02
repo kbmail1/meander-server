@@ -1,4 +1,4 @@
-import './DictResult.scss'
+import './DictDomResult.scss'
 import { useQuery, gql } from '@apollo/client'
 import { useState } from 'react'
 import { NavItem } from 'react-bootstrap'
@@ -13,7 +13,7 @@ const GET_WORD_INFO = gql`
   }
 `
 
-export const DictResult = (props) => {
+export const DictDomResult = (props) => {
   const [activeTab, setActiveTab] = useState({
     tabId: '',
     dataId: '',
@@ -74,6 +74,7 @@ export const DictResult = (props) => {
           activeTab?.dataId !== dataId ? 'display-none' : ''
         }`}
       >
+        YO YO I AM DOM
         <div className="dict_result__general__kvpair">
           <span className="key-of-pair">meaning:</span>
           <span className="val-of-pair">{item?.meaning}</span>
@@ -124,4 +125,4 @@ export const DictResult = (props) => {
   )
 }
 
-export default DictResult
+export default DictDomResult

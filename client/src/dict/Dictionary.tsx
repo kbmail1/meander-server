@@ -1,58 +1,52 @@
 import './Dictionary.scss'
-import DictResult from './DictResult'
 import { Button } from 'react-bootstrap'
-import { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import TechMenu from './TechMenu'
 
-const Dictionary = (props) => {
+
+export const BubbleUpWordContext = React.createContext({})
+
+const Dictionary = () => {
+  const placeholder = ''
   const [word, setWord] = useState('')
-  const [data, setData] = useState()
-  const [dataAvail, setDataAvail] = useState(false)
+  const [wordToLookup, setWordToLookup] = useState('')
 
-  console.log(`Dictionary, props: ${[...Object.keys(props)]}`)
+  const bubbleUpWord = (word) => {
+    setWord(word)
+  }
 
-  const handleSearch = (e) => {
-    // TODO: confirm if necessary...
-    e.stopPropagation() // and preventDefault()?
-    if (word && word.trim().length > 0) {
-      setWord(word.trim())
+  const handleInputChange = (e) => {
+    setWord(e.target.value)
+  }
+  const handleLookup = (e) => {
+    e.stopPropagation()
+    if (!word || word.length === 0) {
+      return
     }
-    console.log(`searching for word ${word}`)
-
-    const url = `https://localhost:8888/rest/word/${word}`
-
-    axios
-      .get(url)
-      .then((response) => {
-        console.log('d... ', JSON.stringify(response.data, null, 2))
-        setData(response.data)
-        setDataAvail(true)
-      })
-      .catch((err) => {
-        console.log(`get from ${url} failed.  Error: ${err}`)
-      })
+    setWordToLookup(word)
   }
 
   return (
     <>
-      <div className="dict-query">
-        <input
-          type="text"
-          placeholder="Word"
-          value={word}
-          onChange={(e) => setWord(e.target.value)}
-        />
-        <button
-          type="button"
-          className="search-button"
-          onClick={handleSearch}
-        />
-      </div>
-
-      {dataAvail && <DictResult word={word} info={data} />}
-      {!dataAvail && (
-        <div>Word {word} is not a dictionary word (American Standard)</div>
-      )}
+      <BubbleUpWordContext.Provider value={bubbleUpWord}>
+        <h1>Dictionary</h1>
+        <div className="dict-query">
+          <input
+            type="text"
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            value={word}
+          />
+          <button
+            type="button"
+            className="search-button"
+            onClick={handleLookup}
+          />
+        </div>
+        <p className="p-gap"></p>
+        {wordToLookup && <TechMenu word={wordToLookup} />}
+      </BubbleUpWordContext.Provider>
     </>
   )
 }
