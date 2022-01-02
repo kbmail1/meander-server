@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AACA,AAAA,eAAe,CAAC;EACd,OAAO,EAAE,IAAI;EACb,WAAW,EAAC,UAAU;CACvB;;AACD,AAAA,aAAa,CAAC;EACZ,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,OAAO,EAAE,UAAU;EACnB,MAAM,EAAE,CAAC;CACV;;AACD,AAAA,YAAY,CAAC;EACX,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;CAEpB;;AAED,AAAA,oBAAoB,CAAC;EACnB,MAAM,EAAE,aAAa;CACtB",
-    "sources": [
-        "Dictionary.scss"
-    ],
-    "names": [],
-    "file": "Dictionary.css"
-}
