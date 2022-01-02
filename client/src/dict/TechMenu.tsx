@@ -35,7 +35,6 @@ const TechMenu = (props) => {
 
   return (
     <>
-      <h2>Choose technology to render dictionary results for {props.word}</h2>
       <div className="techmenu-choices">
         <button
           id="idreact"

@@ -1,15 +1,20 @@
 import './Dictionary.scss'
-import DictReactResult from './DictReactResult'
-import DictDomResult from './DictDomResult'
 import { Button } from 'react-bootstrap'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import TechMenu from './TechMenu'
 
-const Dictionary = (props) => {
+
+export const BubbleUpWordContext = React.createContext({})
+
+const Dictionary = () => {
   const placeholder = ''
   const [word, setWord] = useState('')
   const [wordToLookup, setWordToLookup] = useState('')
+
+  const bubbleUpWord = (word) => {
+    setWord(word)
+  }
 
   const handleInputChange = (e) => {
     setWord(e.target.value)
@@ -24,22 +29,24 @@ const Dictionary = (props) => {
 
   return (
     <>
-      <h1>Dictionary</h1>
-      <div className="dict-query">
-        <input
-          type="text"
-          placeholder={placeholder}
-          onChange={handleInputChange}
-          value={word}
-        />
-        <button
-          type="button"
-          className="search-button"
-          onClick={handleLookup}
-        />
-      </div>
-      <p className="p-gap"></p>
-      {wordToLookup && <TechMenu word={wordToLookup} />}
+      <BubbleUpWordContext.Provider value={bubbleUpWord}>
+        <h1>Dictionary</h1>
+        <div className="dict-query">
+          <input
+            type="text"
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            value={word}
+          />
+          <button
+            type="button"
+            className="search-button"
+            onClick={handleLookup}
+          />
+        </div>
+        <p className="p-gap"></p>
+        {wordToLookup && <TechMenu word={wordToLookup} />}
+      </BubbleUpWordContext.Provider>
     </>
   )
 }
