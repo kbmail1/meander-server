@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "nodemon src/index.ts",
         "build": "npx tsc",
-        "start": "npm run build && node dist/index.js",
+        "copy": "cp src/localhost.key dist/ && cp src/localhost.crt dist/ && cp package.json dist/",
+        "start": "npm run copy && npm run build && node dist/index.js",
         "xstart": "node index.js",
         "xxxxbuild": "cd ../client && npm run build && mv ./build ..",
         "client": " cd ../client && npm run dev"
