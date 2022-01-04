@@ -59,7 +59,7 @@ let sample: IWordInfo = {
     meanings: []
 }
 
-app.get('/rest/word/:lookupWord', (req, res) => {
+app.get('/dict/word/:lookupWord', (req, res) => {
     let word = req.params.lookupWord
     console.log(`received URL: ', ${req.url} for word: ${word}`)
     const url = `${DICT_URL}${word}`

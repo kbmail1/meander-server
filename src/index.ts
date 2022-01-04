@@ -4,7 +4,7 @@ import path from 'path'
 import https from 'https'
 import http from 'http'
 import express from 'express'
-// import bodyParser from 'body-parser'
+import bodyParser from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { resolvers } from './resources/gql/dictResolver'
@@ -24,7 +24,7 @@ const corsOptions = {
     credentails: true // allow to send coories over CORS
 }
 dotenv.config()
-const expressApp = express();
+const app = express();
 
 const getCredsForHttps = () => {
     console.log(`----- ${__dirname}`)
@@ -45,8 +45,9 @@ const expressMiddleware = (app: any) => {
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(cors(corsOptions))
-    // app.use(bodyParser.urlencoded({ extended: false }));
-    // app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.raw());
 }
 
 const apolloMiddleware = (app: any) => {
@@ -63,18 +64,31 @@ const apolloMiddleware = (app: any) => {
     })
 }
 
-// Move BELOW out of this file
-expressApp.get('/', (req, res) => {
+app.post('/', (req, res) => {
     res.status(200).json({
         status: true,
         data: `Hello from Node Server at ${PORT_HTTPS}`
     })
-    // res.send('Hello World!')
 })
 
-// - post needed to field GQL requests from client -  expressApp.post('/rest/word/:lookupWord', (req, res) => {
-// expressApp.post('/rest/word/:lookupWord', (req, res) => {
-expressApp.get('/rest/word/:lookupWord', (req, res) => {
+app.get('/login', (req, res) => {
+    let role = 'guest'
+    console.log('login body:', req.body)
+    const id = req.body.userid;
+    if (id === 'kundan') {
+        role = 'mfa'
+    } else if (id === 'neetu') {
+        role = "oauth"
+    } else if (id === 'tanay' || id === 'kavin') {
+        role = 'basicAuth'
+    }
+    res.status(200).json({
+        status: true,
+        role,
+    })
+})
+
+app.get('/dict/:lookupWord', (req, res) => {
     let word = req.params.lookupWord
     console.log(`received URL: ', ${req.url} for word: ${word}`)
     const url = `${DICT_URL}${word}`
@@ -99,12 +113,12 @@ expressApp.get('/rest/word/:lookupWord', (req, res) => {
 // Move ABOVE out of this file.
 
 // start the common server - https for
-expressMiddleware(expressApp)
-const credOptions = getCredsForHttps()
-apolloMiddleware(expressApp)
+expressMiddleware(app)
+apolloMiddleware(app)
 
-// http.createServer(expressApp)
-https.createServer(credOptions, expressApp)
+const credOptions = getCredsForHttps()
+// http.createServer(app)
+https.createServer(credOptions, app)
     .listen(PORT_HTTPS, () => {
         console.log(`Express and 🚀 Server are running at: ${ PORT_HTTPS }`)
 })
