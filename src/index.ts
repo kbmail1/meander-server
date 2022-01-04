@@ -75,12 +75,14 @@ app.get('/login', (req, res) => {
     let role = 'guest'
     console.log('login body:', req.body)
     const id = req.body.userid;
-    if (id === 'kundan') {
+    if (id === 'root') {
         role = 'mfa'
-    } else if (id === 'neetu') {
+    } else if (id === 'admin') {
         role = "oauth"
-    } else if (id === 'tanay' || id === 'kavin') {
+    } else if (id === 'subscriber') {
         role = 'basicAuth'
+    } else {
+        role = 'guest'
     }
     res.status(200).json({
         status: true,
