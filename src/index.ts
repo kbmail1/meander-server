@@ -64,16 +64,18 @@ const apolloMiddleware = (app: any) => {
     })
 }
 
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).json({
         status: true,
         data: `Hello from Node Server at ${PORT_HTTPS}`
     })
 })
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
+    /*
     let role = 'guest'
-    console.log('login body:', req.body)
+    console.log('login req.body:', req.body)
+    console.log('login req:', req)
     const id = req.body.userid;
     if (id === 'root') {
         role = 'mfa'
@@ -87,6 +89,11 @@ app.get('/login', (req, res) => {
     res.status(200).json({
         status: true,
         role,
+    })
+    */
+    res.status(200).json({
+        status: true,
+        role: 'root'
     })
 })
 
