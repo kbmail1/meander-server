@@ -1,5 +1,5 @@
 require('source-map-support').install()
-import fs from 'fs'
+import fs, { access } from 'fs'
 import path from 'path'
 import https from 'https'
 import http from 'http'
@@ -13,7 +13,9 @@ import axios from 'axios'
 import { IWordInfo, parseWordInfo } from './wordResultParser'
 import { ApolloServer } from 'apollo-server-express'
 import { emptyWordInfo, typeDefs } from './resources/gql/dictSchema'
+import jwt from 'jsonwebtoken'
 
+import crypto from 'crypto'
 // Consts
 
 const PORT_HTTPS = 8888
@@ -35,34 +37,32 @@ const getCredsForHttps = () => {
     return { key: privateKey, cert: certificate, }
 }
 
-const expressMiddleware = (app: any) => {
-    // --- Express middleware
-    if ('production'.length > 0) {
-        app.use(express.static("build"))
-    }
-    // bodyParser() deprecated.  factory methods still available.
-    // express 4.16+ - express.json() and express.urlencoded() prefered.
-    app.use(express.json())
-    app.use(express.urlencoded({extended: true}))
-    app.use(cors(corsOptions))
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use(bodyParser.raw());
+// --- Express middleware
+if ('production'.length > 0) {
+    app.use(express.static("build"))
 }
+// bodyParser() deprecated.  factory methods still available.
+// express 4.16+ - express.json() and express.urlencoded() prefered.
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors(corsOptions))
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const apolloMiddleware = (app: any) => {
-    // GQL (Apollo) server
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers,
+const jsonParser = bodyParser.json();
+app.use(jsonParser)
+app.use(bodyParser.raw());
+
+// GQL (Apollo) server
+const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+})
+apolloServer.start().then(() => {
+    apolloServer.applyMiddleware({
+        app,
+        cors: corsOptions
     })
-    apolloServer.start().then(() => {
-        apolloServer.applyMiddleware({
-            app,
-            cors: corsOptions
-        })
-    })
-}
+})
 
 app.get('/', (req, res) => {
     res.status(200).json({
@@ -71,30 +71,61 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
-    /*
-    let role = 'guest'
-    console.log('login req.body:', req.body)
-    console.log('login req:', req)
-    const id = req.body.userid;
-    if (id === 'root') {
-        role = 'mfa'
-    } else if (id === 'admin') {
-        role = "oauth"
-    } else if (id === 'subscriber') {
-        role = 'basicAuth'
-    } else {
-        role = 'guest'
+
+const users = [
+    {
+        email: 'kundan.bapat@gmail.com',
+        username: 'kundan',
+        enc_password: 'ece3040fc3d84622bed5713df4b4edc12cfe2da1471f11cadc2928a704b21f89',
     }
+]
+
+app.post('/testjwt', jsonParser, (req: express.Request, res: express.Response) => {
+    const token = req.body.token
+    console.log('testjwt: token received: ', token)
+    const verifyResult = jwt.verify(token, 'abcd')
+    console.log('token you sent: ', token)
+    console.log(`result of verification: ', ${verifyResult}`)
+    console.log('next time provide op to perform')
+
     res.status(200).json({
-        status: true,
-        role,
+        result: verifyResult,
+        token_you_sent: token
     })
-    */
-    res.status(200).json({
-        status: true,
-        role: 'root'
-    })
+    return
+})
+
+app.post('/login', jsonParser, (req: express.Request, res: express.Response) => {
+
+    console.log('....', req.body)
+    const email = req.body.email
+    const password = req.body.password
+    const enc = crypto.createHash('sha256').update(password).digest('hex')
+    console.log(`${email}, ${password}`)
+    console.log(`encoded: ${enc}`)
+
+    console.log(`enc: ${enc}, from db: ${users[0].enc_password}`)
+    // TODO: use docker psql - client is expected to hash their password. if stoken, orig password stays safe
+    //  server - frequenty update token.
+    if (users[0].email === email && users[0].enc_password === enc) {
+        const payload = {
+            data: enc,
+        }
+        let accessToken = jwt.sign(payload, 'abcd', {
+            expiresIn: '60d',
+        })
+        console.log(`accesstoken: ${accessToken}`)
+        res.status(200).json({
+            login: true,
+            token: accessToken,
+        })
+    } else {
+        res.status(400).json({
+            login: true,
+            token: '',
+            message: 'email and/or password did not match'
+        })
+    }
 })
 
 app.get('/dict/:lookupWord', (req, res) => {
@@ -121,13 +152,9 @@ app.get('/dict/:lookupWord', (req, res) => {
 })
 // Move ABOVE out of this file.
 
-// start the common server - https for
-expressMiddleware(app)
-apolloMiddleware(app)
-
 const credOptions = getCredsForHttps()
 // http.createServer(app)
 https.createServer(credOptions, app)
     .listen(PORT_HTTPS, () => {
-        console.log(`Express and 🚀 Server are running at: ${ PORT_HTTPS }`)
-})
+        console.log(`Express and 🚀 Server are running at: ${PORT_HTTPS}`)
+    })
