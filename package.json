@@ -5,10 +5,10 @@
     "main": "index.js",
     "scripts": {
         "dev": "nodemon src/index.ts",
-        "build": "npx tsc",
+        "xbuild": "npx tsc",
         "start": "npm run build && node dist/index.js",
         "xstart": "node index.js",
-        "xxxxbuild": "cd ../client && npm run build && mv ./build ..",
+        "build": "cd ../crispy-winner/dist/crispy-winner && npm run build",
         "client": " cd ../client && npm run dev"
     },
     "keywords": [],
@@ -18,10 +18,12 @@
         "@types/jsonwebtoken": "^8.5.6",
         "@types/lodash": "^4.14.178",
         "@types/node": "^16.11.10",
+        "@types/nodemailer": "^6.4.4",
         "apollo-datasource-http": "^0.17.1",
         "axios": "^0.24.0",
         "jsonwebtoken": "^8.5.1",
         "lodash": "^4.17.21",
+        "nodemailer": "^6.7.2",
         "source-map-support": "^0.5.21",
         "ts-node": "^10.4.0"
     },

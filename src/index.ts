@@ -14,6 +14,7 @@ import { IWordInfo, parseWordInfo } from './wordResultParser'
 import { ApolloServer } from 'apollo-server-express'
 import { emptyWordInfo, typeDefs } from './resources/gql/dictSchema'
 import jwt from 'jsonwebtoken'
+import { sendEmail } from './emailService'
 
 import crypto from 'crypto'
 // Consts
@@ -65,6 +66,7 @@ apolloServer.start().then(() => {
 })
 
 app.get('/', (req, res) => {
+    console.log('/ get request')
     res.status(200).json({
         status: true,
         data: `Hello from Node Server at ${PORT_HTTPS}`
@@ -95,9 +97,16 @@ app.post('/testjwt', jsonParser, (req: express.Request, res: express.Response) =
     return
 })
 
+app.post('/signup', jsonParser, (req: express.Request, res: express.Response) => {
+
+    console.log('..../signup', req.body)
+    sendEmail(req.body.code)
+    res.status(200).end('sent email. please enter code')
+})
+
 app.post('/login', jsonParser, (req: express.Request, res: express.Response) => {
 
-    console.log('....', req.body)
+    console.log('..../login', req.body)
     const email = req.body.email
     const password = req.body.password
     const enc = crypto.createHash('sha256').update(password).digest('hex')
