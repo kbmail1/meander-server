@@ -15,9 +15,12 @@ import { ApolloServer } from 'apollo-server-express'
 import { emptyWordInfo, typeDefs } from './resources/gql/dictSchema'
 import jwt from 'jsonwebtoken'
 import { sendEmail } from './emailService'
+import * as mongoService from './mongoService'
 
 import crypto from 'crypto'
 // Consts
+
+let mongoInitialized: Promise<boolean>
 
 const PORT_HTTPS = 8888
 const PORT_HTTP = 8887
@@ -28,6 +31,7 @@ const corsOptions = {
 }
 dotenv.config()
 const app = express();
+mongoInitialized = mongoService.initConnection()
 
 const getCredsForHttps = () => {
     console.log(`----- ${__dirname}`)
@@ -73,7 +77,6 @@ app.get('/', (req, res) => {
     })
 })
 
-
 const users = [
     {
         email: 'kundan.bapat@gmail.com',
@@ -97,8 +100,53 @@ app.post('/testjwt', jsonParser, (req: express.Request, res: express.Response) =
     return
 })
 
-app.post('/signup', jsonParser, (req: express.Request, res: express.Response) => {
+// Mongo calls.
+app.post('/mongo/create', (req, res) => {
+    console.log('mongo create post request')
+    // mongoService.create(req.body.user, (result: any) => {
+    mongoService.create({
+        email: 'a@b.com',
+        password: '123',
+        chatlets: [],
+        friends: []
+    }, (result: any) => {
+        res.status(200).json({
+            status: true,
+            result,
+        })
+    })
+})
 
+// Mongo calls.
+app.post('/mongo/read', (req, res) => {
+    console.log('mongo read post request')
+    mongoService.read(req.body.email, (result: any) => {
+        res.status(200).json({
+            status: true,
+            result,
+        })
+    })
+})
+
+
+// Mongo calls.
+app.post('/mongo/update', jsonParser, (req: express.Request, res: express.Response) => {
+    console.log('mongo update post request - ', req.body.user)
+    mongoService.update (req.body.user, (result: any) => {
+        res.status(200).json({
+            status: true,
+            result,
+        })
+    })
+})
+
+// Mongo calls.
+app.post('/mongo/remove', (req, res) => {
+    console.log(' mongo remove post request')
+    mongoService.remove (req.body.email)
+})
+
+app.post('/signup', jsonParser, (req: express.Request, res: express.Response) => {
     console.log('..../signup', req.body)
     sendEmail(req.body.code)
     res.status(200).end('sent email. please enter code')
