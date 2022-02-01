@@ -149,7 +149,9 @@ app.post('/mongo/remove', (req, res) => {
 app.post('/signup', jsonParser, (req: express.Request, res: express.Response) => {
     console.log('..../signup', req.body)
     sendEmail(req.body.code)
-    res.status(200).end('sent email. please enter code')
+    res.status(200).end(JSON.stringify({
+        success: 'sent email. please enter code'
+    }, null, 2))
 })
 
 app.post('/login', jsonParser, (req: express.Request, res: express.Response) => {
