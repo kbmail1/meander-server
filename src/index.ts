@@ -2,23 +2,70 @@ require('source-map-support').install()
 import fs, { access } from 'fs'
 import path from 'path'
 import https from 'https'
-import http from 'http'
+import http, { request } from 'http'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { resolvers } from './resources/gql/dictResolver'
 
-import axios from 'axios'
+import axios, { Axios, AxiosResponse } from 'axios'
 import { IWordInfo, parseWordInfo } from './wordResultParser'
 import { ApolloServer } from 'apollo-server-express'
 import { emptyWordInfo, typeDefs } from './resources/gql/dictSchema'
 import jwt from 'jsonwebtoken'
 import { sendEmail } from './emailService'
 import * as mongoService from './mongoService'
+import { WordStreamsPipeline } from './wordStreamsPipe'
 
 import crypto from 'crypto'
+import { Http2ServerResponse } from 'http2'
 // Consts
+
+const wordResponse = {
+    definitions: [
+        "be or remain in a particular position or state.",
+        "(of a parliament, committee, court of law, etc.) be engaged in its business.",
+        "take (an examination).",
+        "live in someone's house while they are away and look after their pet or pets.",
+        "the way in which an item of clothing fits someone.",
+    ],
+    synonyms: [
+        "take a seat",
+        "seat oneself",
+        "settle down",
+        "be seated",
+        "take a chair",
+        "perch",
+        "install oneself",
+        "ensconce oneself",
+        "plant oneself",
+        "plump oneself",
+        "flop",
+        "collapse",
+        "sink down",
+        "flump",
+        "park oneself",
+        "plonk oneself",
+        "take a pew",
+        "meet",
+        "assemble",
+        "convene",
+        "be in session"
+    ],
+    antonyms: [
+        "stand",
+        "rise"
+    ],
+    examples: [
+        "I sat next to him at dinner",
+        "the fridge was sitting in a pool of water",
+        "Parliament continued sitting until March 16",
+        "pupils are required to sit nine subjects at GCSE",
+        "Kelly had been cat-sitting for me",
+        "the sit of her frock",
+    ]
+}
 
 let mongoInitialized: Promise<boolean>
 
@@ -71,9 +118,19 @@ apolloServer.start().then(() => {
 
 app.get('/', (req, res) => {
     console.log('/ get request')
+    process.stdout.pipe(res)
+    console.log('======= RESPONSE: ', res)
     res.status(200).json({
         status: true,
         data: `Hello from Node Server at ${PORT_HTTPS}`
+    })
+})
+
+app.get('/word', (req, res) => {
+    console.log('/ get request')
+    res.status(200).json({
+        status: true,
+        wordResponse,
     })
 })
 
@@ -100,13 +157,15 @@ app.post('/testjwt', jsonParser, (req: express.Request, res: express.Response) =
     return
 })
 
+
+
 // Mongo calls.
 app.post('/mongo/create', (req, res) => {
     console.log('mongo create post request')
     // mongoService.create(req.body.user, (result: any) => {
     mongoService.create({
-        email: 'a@b.com',
-        password: '123',
+        email: req.body.email,
+        password: req.body.password,
         chatlets: [],
         friends: []
     }, (result: any) => {
